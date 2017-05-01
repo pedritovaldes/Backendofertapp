@@ -162,4 +162,25 @@ class ApiController extends Controller
         ));
 
     }
+
+    public function getAnuncios($user_id, Request $request){
+
+        $anuncios = Anuncio::where('user_id', $user_id)->get();
+
+        if($anuncios && count($anuncios)) {
+
+            return response()->json(array(
+                'anuncios' => $anuncios,
+                'message'       => 'Get anuncios ok',
+                'code'          => 200
+            ));
+
+        } else {
+            return response()->json(array(
+                'anuncios' => $anuncios,
+                'message'       => 'Lista anuncios vacía',
+                'code'          => 200
+            ));
+        }
+    }
 }
