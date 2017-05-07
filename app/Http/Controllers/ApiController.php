@@ -165,7 +165,7 @@ class ApiController extends Controller
 
     public function getAnuncios($user_id, Request $request){
 
-        $anuncios = Anuncio::where('user_id', $user_id)->get();
+        $anuncios = Anuncio::where('user_id', $user_id)->whereNull('deleted_at')->get();
 
         if($anuncios && count($anuncios)) {
 
