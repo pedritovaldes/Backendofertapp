@@ -183,4 +183,27 @@ class ApiController extends Controller
             ));
         }
     }
+
+    public function deleteAnuncioById($id_anuncio, Request $request) {
+
+        $anuncio = Anuncio::find($id_anuncio);
+
+        if($anuncio) {
+
+            if($anuncio->delete()) {
+
+                return response()->json(array(
+                    'message' => 'Anuncio eliminado correctamente',
+                    'code' => 200
+                ));
+            }
+
+        }
+
+        return response()->json(array(
+            'message' => 'Anuncio no encontrado',
+            'code' => 404
+        ));
+
+    }
 }
