@@ -206,4 +206,54 @@ class ApiController extends Controller
         ));
 
     }
+
+    public function updateAnuncioById($id_anuncio, Request $request) {
+
+        $anuncio = Anuncio::find($id_anuncio);
+
+        if($anuncio) {
+
+            $titulo = $request->titulo;
+            $user_id = int($request->user_id);
+            $sector_profesional = $request->sector_profesional;
+            //$localidad = $request->localidad;
+            $provincia = $request->provincia;
+            $precio_max = int($request->precio_maximo);
+            $descripcion = $request->descripcion;
+
+            //Obligados título, sector y provincia
+            if($titulo != '' && $sector_profesional != '' && $provincia != '') {
+
+                $anuncio->titulo = $titulo;
+                $anuncio->user_id = $user_id;
+                $anuncio->sector_profesional = $sector_profesional;
+                $anuncio->provincia = $provincia;
+                //$anuncio->localidad = $localidad;
+                $anuncio->descripcion = $descripcion;
+                $anuncio->precio_maximo = $precio_max;
+
+                if($anuncio->save()) {
+
+                    return response()->json(array(
+                        'message' => 'Anuncio actualizado correctamente',
+                        'code' => 201
+                    ));
+                }
+                else {
+                    $msg = 'Ha ocurrido algún problema al actualizar';
+                }
+            }
+            else {
+                $msg = 'Campos obligatorios';
+            }
+        }
+        else {
+            $msg = 'Anuncio no encontrado';
+        }
+
+        return response()->json(array(
+            'message' => $msg,
+            'code' => 400
+        ));
+    }
 }

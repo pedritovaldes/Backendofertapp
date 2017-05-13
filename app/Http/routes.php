@@ -28,5 +28,6 @@ Route::group(['prefix' => 'api/v1'], function()
     Route::post('anuncio', 'ApiController@createAnuncio');
     Route::get('anuncio/{user_id}', 'ApiController@getAnuncios');
     Route::delete('anuncio/{anuncio_id}', 'ApiController@deleteAnuncioById');
+    Route::put('anuncio/{anuncio_id}', 'ApiController@updateAnuncioById');
 
 });
