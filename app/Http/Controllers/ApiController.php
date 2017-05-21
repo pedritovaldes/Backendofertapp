@@ -279,7 +279,7 @@ class ApiController extends Controller
                 }
 
 
-                if($anuncio->save()) {
+                if($user->save()) {
 
                     return response()->json(array(
                         'message' => 'Usuario actualizado correctamente',
