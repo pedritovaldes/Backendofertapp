@@ -23,6 +23,7 @@ Route::group(['prefix' => 'api/v1'], function()
 
     //Perfil del usuario
     Route::delete('user/{id}', 'ApiController@deleteUser');
+    Route::put('user/{id}', 'ApiController@updateUser');
 
     //Anuncios
     Route::post('anuncio', 'ApiController@createAnuncio');

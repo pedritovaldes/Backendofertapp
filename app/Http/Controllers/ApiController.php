@@ -255,4 +255,52 @@ class ApiController extends Controller
             'code' => 400
         ));
     }
+
+    public function updateUser($id_user, Request $request) {
+
+        $user = User::find($id_user);
+
+        if($user) {
+
+            $nombre = $request->nombre;
+            $email = $request->email;
+            $telefono = $request->telefono;
+            $descripcion = $request->descripcion;
+
+            if($nombre != '' && $email != '' && $telefono != '') {
+
+                $user->name = $nombre;
+                $user->email = $email;
+                $user->telefono = $telefono;
+                $user->descripcion = $descripcion;
+
+                if($request->password != '') {
+                    $user->password = $request->password;
+                }
+
+
+                if($anuncio->save()) {
+
+                    return response()->json(array(
+                        'message' => 'Usuario actualizado correctamente',
+                        'code' => 200
+                    ));
+                }
+                else {
+                    $msg = 'Ha ocurrido algún problema al actualizar';
+                }
+            }
+            else {
+                $msg = 'Campos obligatorios';
+            }
+        }
+        else {
+            $msg = 'Usuario no encontrado';
+        }
+
+        return response()->json(array(
+            'message' => $msg,
+            'code' => 400
+        ));
+    }
 }
