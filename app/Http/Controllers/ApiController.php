@@ -214,18 +214,17 @@ class ApiController extends Controller
         if($anuncio) {
 
             $titulo = $request->titulo;
-            $user_id = int($request->user_id);
             $sector_profesional = $request->sector_profesional;
             //$localidad = $request->localidad;
             $provincia = $request->provincia;
-            $precio_max = int($request->precio_maximo);
+            $precio_max = intval($request->precio_maximo);
             $descripcion = $request->descripcion;
 
             //Obligados título, sector y provincia
+            //También se validan en el front
             if($titulo != '' && $sector_profesional != '' && $provincia != '') {
 
                 $anuncio->titulo = $titulo;
-                $anuncio->user_id = $user_id;
                 $anuncio->sector_profesional = $sector_profesional;
                 $anuncio->provincia = $provincia;
                 //$anuncio->localidad = $localidad;
@@ -236,7 +235,7 @@ class ApiController extends Controller
 
                     return response()->json(array(
                         'message' => 'Anuncio actualizado correctamente',
-                        'code' => 201
+                        'code' => 200
                     ));
                 }
                 else {
