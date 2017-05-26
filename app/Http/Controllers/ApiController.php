@@ -258,7 +258,7 @@ class ApiController extends Controller
 
     public function updateUser($id_user, Request $request) {
 
-        $user = User::find($id_user);
+        $user = User::find(intval($id_user));
 
         if($user) {
 
@@ -283,8 +283,15 @@ class ApiController extends Controller
 
                     return response()->json(array(
                         'message' => 'Usuario actualizado correctamente',
-                        'code' => 200
+                        'code' => 200,
+                        'user_id'       => $user->id,
+                        'user_nombre'   => $user->name,
+                        'user_email'    => $user->email,
+                        'user_telefono' => $user->telefono,
+                        'user_desc'     => $user->descripcion,
+                        'user_pass'     => $user->password
                     ));
+
                 }
                 else {
                     $msg = 'Ha ocurrido algún problema al actualizar';
