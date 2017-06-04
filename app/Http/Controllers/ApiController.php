@@ -8,11 +8,16 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+
+    protected $opciones = [
+        'cost' => 12,
+    ];
+
     public function deleteUser($id_user, Request $request) {
 
-        $user = User::find($id_user);
+        $user = User::searchByIdUser($id_user);
 
-        if($user) {
+        if($user != null) {
 
             if($user->delete()) {
 
@@ -46,18 +51,17 @@ class ApiController extends Controller
             $user->telefono = $telefono;
             $user->email = $email;
             $user->descripcion = $descripcion;
-            //$user->password = '1234';
             $user->foto = null;
 
             if($user->save())
             {
 
                 $psswd = substr( md5(microtime()), 1, 4);
-                $user->password = $psswd;
+                $user->password = password_hash($psswd, PASSWORD_BCRYPT, $this->opciones);
 
                 if($user->save()) {
 
-                    \Mail::send('emails.hello', array('user' => $user), function($message) use($user)
+                    \Mail::send('emails.hello', array('user' => $user, 'pass' => $psswd), function($message) use($user)
                     {
                         $message->from('noresponder@ofertapp', 'No responder');
                         $message->to($user->email, $user->name)->subject('Welcome to OfertAPP');
@@ -86,12 +90,19 @@ class ApiController extends Controller
 
         if($email != '' && $pass != '') {
 
-            $user = User::where('email', $email)->where('password', $pass)->get()->first();
+            $user = User::where('email', $email)->get()->first();
 
             if(is_null($user)) {
 
                 return response()->json(array(
                     'message' => 'Usuario no existente',
+                    'code' => 400
+                ));
+
+            } else if(!password_verify($pass, $user->password)) {
+
+                return response()->json(array(
+                    'message' => 'Contraseña incorrecta',
                     'code' => 400
                 ));
 
