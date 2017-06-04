@@ -14,4 +14,16 @@ class User extends Model
     protected $fillable = ['id', 'name', 'email', 'password', 'telefono', 'descripcion', 'foto'];
 
     protected $table = 'users';
+
+
+    public static function searchByIdUser($idUser) {
+
+        $user = User::find($idUser);
+
+        if($user) {
+            return $user;
+        } else {
+            return null;
+        }
+    }
 }
