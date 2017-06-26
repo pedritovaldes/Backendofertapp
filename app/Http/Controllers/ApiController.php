@@ -174,7 +174,7 @@ class ApiController extends Controller
 
     }
 
-    public function getAnuncios($user_id, Request $request){
+    public function getAnunciosByUser($user_id, Request $request){
 
         $anuncios = Anuncio::where('user_id', $user_id)->whereNull('deleted_at')->get();
 
@@ -286,7 +286,7 @@ class ApiController extends Controller
                 $user->descripcion = $descripcion;
 
                 if($request->password != '') {
-                    $user->password = $request->password;
+                    $user->password = password_hash($request->password, PASSWORD_BCRYPT, $this->opciones);
                 }
 
 
@@ -320,5 +320,30 @@ class ApiController extends Controller
             'message' => $msg,
             'code' => 400
         ));
+    }
+
+    public function getAnuncios($sector, $provincia, $precio, $fecha, Request $request) {
+
+        $anuncios = Anuncio::where('sector_profesional', '=', $sector)
+                     ->where('provincia', '=', $provincia)
+                     ->where('precio_maximo', '>=', $precio)
+                     //->where()
+                     ->whereNull('deleted_at')->get();
+
+        if($anuncios && count($anuncios)) {
+
+            return response()->json(array(
+                'anuncios' => $anuncios,
+                'message'       => 'Get anuncios ok',
+                'code'          => 200
+            ));
+
+        } else {
+            return response()->json(array(
+                'anuncios' => $anuncios,
+                'message'       => 'Lista anuncios vacía',
+                'code'          => 200
+            ));
+        }
     }
 }
