@@ -322,13 +322,14 @@ class ApiController extends Controller
         ));
     }
 
-    public function getAnuncios($sector, $provincia, $precio, $fecha, Request $request) {
+    public function getAnuncios($sector, $provincia, $precio, Request $request) {
 
-        $anuncios = Anuncio::where('sector_profesional', '=', $sector)
-                     ->where('provincia', '=', $provincia)
-                     ->where('precio_maximo', '>=', $precio)
-                     //->where()
-                     ->whereNull('deleted_at')->get();
+        $anuncios = \DB::table('anuncios')
+                        ->join('users', 'anuncios.user_id', '=', 'users.id')
+                        ->where('sector_profesional', '=', $sector)
+                        ->where('provincia', '=', $provincia)
+                        ->where('precio_maximo', '>=', $precio)
+                        ->whereNull('deleted_at')->get();
 
         if($anuncios && count($anuncios)) {
 
