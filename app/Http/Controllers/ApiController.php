@@ -37,6 +37,7 @@ class ApiController extends Controller
     }
 
     public function registro(Request $request) {
+
         $nombre = $request->nombre;
         $email = $request->email;
         $telefono = $request->telefono;
@@ -329,7 +330,11 @@ class ApiController extends Controller
                         ->where('sector_profesional', '=', $sector)
                         ->where('provincia', '=', $provincia)
                         ->where('precio_maximo', '>=', $precio)
-                        ->whereNull('deleted_at')->get();
+                        ->whereNull('deleted_at')
+                        ->select('users.id as idUser', 'users.name as name', 'users.email as email', 'users.telefono as telefono',
+                        'anuncios.id as idAnuncio', 'anuncios.titulo as titulo', 'anuncios.sector_profesional as sector_profesional',
+                        'anuncios.provincia as provincia', 'anuncios.precio_maximo as precio_maximo', 'anuncios.descripcion as descripcion')
+                        ->get();
 
         if($anuncios && count($anuncios)) {
 
