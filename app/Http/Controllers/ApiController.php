@@ -19,7 +19,7 @@ class ApiController extends Controller
 
         if($user != null) {
 
-            if($user->delete()) {
+            if(User::deleteUserById($id_user)) {
 
                 return response()->json(array(
                     'message' => 'Usuario eliminado correctamente',
@@ -43,7 +43,8 @@ class ApiController extends Controller
         $telefono = $request->telefono;
         $descripcion = $request->descripcion;
 
-        $usuarios = User::where('email', $email)->get()->first();
+        //$usuarios = User::where('email', $email)->get()->first();
+        $usuarios = User::searchUserByEmail($email);
 
         if(is_null($usuarios))
         {
