@@ -338,7 +338,6 @@ class ApiController extends Controller
                         'anuncios.id as idAnuncio', 'anuncios.titulo as titulo', 'anuncios.sector_profesional as sector_profesional',
                         'anuncios.provincia as provincia', 'anuncios.precio_maximo as precio_maximo', 'anuncios.descripcion as descripcion')
                         ->get();
-                        return $anuncios;
 
         if($anuncios && count($anuncios)) {
 
