@@ -29,7 +29,7 @@ Route::group(['prefix' => 'api/v1'], function()
     Route::post('anuncio', 'ApiController@createAnuncio');
     Route::delete('anuncio/{anuncio_id}', 'ApiController@deleteAnuncioById');
     Route::put('anuncio/{anuncio_id}', 'ApiController@updateAnuncioById');
-    Route::get('anuncio/{sector}/{provincia}/{precioMax}', 'ApiController@getAnuncios');
+    Route::get('anuncio/{sector}/{provincia}/{precioMax}/{fecha}', 'ApiController@getAnuncios');
 
     //Anuncios del usuario
     Route::get('user/{user_id}/anuncios', 'ApiController@getAnunciosByUser');

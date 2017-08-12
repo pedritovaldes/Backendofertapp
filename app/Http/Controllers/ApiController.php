@@ -43,7 +43,6 @@ class ApiController extends Controller
         $telefono = $request->telefono;
         $descripcion = $request->descripcion;
 
-        //$usuarios = User::where('email', $email)->get()->first();
         $usuarios = User::searchUserByEmail($email);
 
         if(is_null($usuarios))
@@ -92,7 +91,7 @@ class ApiController extends Controller
 
         if($email != '' && $pass != '') {
 
-            $user = User::where('email', $email)->get()->first();
+            $user = User::searchUserByEmail($email);
 
             if(is_null($user)) {
 
@@ -199,7 +198,7 @@ class ApiController extends Controller
 
     public function deleteAnuncioById($id_anuncio, Request $request) {
 
-        $anuncio = Anuncio::find($id_anuncio);
+        $anuncio = Anuncio::searchByIdAnuncio($id_anuncio);
 
         if($anuncio) {
 
@@ -324,18 +323,22 @@ class ApiController extends Controller
         ));
     }
 
-    public function getAnuncios($sector, $provincia, $precio, Request $request) {
+    public function getAnuncios($sector, $provincia, $precio, $fecha, Request $request) {
+
+        $fechaToCompare = $fecha.' 00:00:00';
 
         $anuncios = \DB::table('anuncios')
                         ->join('users', 'anuncios.user_id', '=', 'users.id')
                         ->where('sector_profesional', '=', $sector)
                         ->where('provincia', '=', $provincia)
-                        ->where('precio_maximo', '>=', $precio)
-                        ->whereNull('deleted_at')
+                        ->where('precio_maximo', '<=', $precio)
+                        ->where('anuncios.created_at', '>=', $fechaToCompare)
+                        ->whereNull('anuncios.deleted_at')
                         ->select('users.id as idUser', 'users.name as name', 'users.email as email', 'users.telefono as telefono',
                         'anuncios.id as idAnuncio', 'anuncios.titulo as titulo', 'anuncios.sector_profesional as sector_profesional',
                         'anuncios.provincia as provincia', 'anuncios.precio_maximo as precio_maximo', 'anuncios.descripcion as descripcion')
                         ->get();
+                        return $anuncios;
 
         if($anuncios && count($anuncios)) {
 

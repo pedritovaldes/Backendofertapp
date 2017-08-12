@@ -18,4 +18,15 @@ class Anuncio extends Model
     'descripcion'];
 
     protected $table = 'anuncios';
+
+    public static function searchByIdAnuncio($idAnuncio) {
+
+        $anuncio = Anuncio::find($idAnuncio);
+
+        if($anuncio) {
+            return $anuncio;
+        } else {
+            return null;
+        }
+    }
 }
