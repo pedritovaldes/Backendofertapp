@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->text('descripcion');
             $table->string('password');
             $table->string('foto');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

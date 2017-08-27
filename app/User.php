@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Model
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -41,7 +44,7 @@ class User extends Model
 
     public static function searchUserByEmail($email) {
 
-        $user = User::where('email', $email)->get()->first();
+        $user = User::where('email', $email)->whereNull('deleted_at')->get()->first();
 
         if($user) {
           return $user;

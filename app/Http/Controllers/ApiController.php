@@ -13,11 +13,17 @@ class ApiController extends Controller
         'cost' => 12,
     ];
 
+public function prueba(Request $request) {
+  return "hola";
+}
+
     public function deleteUser($id_user, Request $request) {
 
         $user = User::searchByIdUser($id_user);
 
         if($user != null) {
+
+            $anuncios = Anuncio::where('user_id', $id_user)->whereNull('deleted_at')->delete();
 
             if(User::deleteUserById($id_user)) {
 

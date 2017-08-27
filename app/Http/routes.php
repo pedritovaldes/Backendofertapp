@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'api/v1'], function()
 {
+    Route::get('/prueba', 'ApiController@prueba');
+
     //Login y registro
     Route::post('registro', 'ApiController@registro');
     Route::post('login', 'ApiController@login');
